@@ -17,7 +17,7 @@ def create_app(test_config=None):
         os.environ.get("SECRET_KEY")
         or "8aa7260d1028ae38f6e978dee5a1e0e80c02bc94de74096e"
     )
-    app.config["SQLALCHEMY_ECHO"] = True
+    app.config["SQLALCHEMY_ECHO"] = True #This causes all generated SQL statements to be piped to stderr
     db = flask_sqlalchemy.SQLAlchemy(app)
     lm.init_app(app)
 
