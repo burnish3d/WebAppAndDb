@@ -4,9 +4,6 @@ from flask_login import UserMixin, LoginManager, login_user, current_user, login
 import bcrypt
 import flask_sqlalchemy
 import os
-import psycopg2
-
-
 
 lm = LoginManager()
 
@@ -27,7 +24,6 @@ def create_app(test_config=None):
     def __repr__(self):
       return f"{self.id} {self.email} {self.password_hash}"
     
-
   db.create_all()
 
   @lm.user_loader
@@ -38,19 +34,6 @@ def create_app(test_config=None):
   def unauthorized():
     return abort('401', description="Not authorized")
 
-
-  @app.route("/signup", methods=["POST"])
-  def signUp():
-    email = request.json['email']
-    if User.query.filter_by(email=email).first(): return '400'
-    password = request.json['password']
-
-    salt = bcrypt.gensalt()
-    hash = bcrypt.hashpw(password.encode('utf-8'), salt) #this step silently ignores passwords longer than 72 characters, and we are goingto treat all input as utf-8 for now
-    db.session.add(User(email=email, password_hash=hash))
-    db.session.commit()
-    return '200'
-    
   @app.route("/login")
   def login():
     email = request.json['email']
@@ -74,11 +57,21 @@ def create_app(test_config=None):
     ret = [{'id': user.id, 'email': user.email, 'password_hash': user.password_hash.decode('utf-8')} for user in all_users]
     return jsonify(ret)
 
+  @app.route("/signup", methods=["POST"])
+  def signUp():
+    email = request.json['email']
+    if User.query.filter_by(email=email).first(): return '400'
+    password = request.json['password']
+    salt = bcrypt.gensalt()
+    hash = bcrypt.hashpw(password.encode('utf-8'), salt) #this step silently ignores passwords longer than 72 characters, and we are goingto treat all input as utf-8 for now
+    db.session.add(User(email=email, password_hash=hash))
+    db.session.commit()
+    return '200'
+
   @app.route("/secrets")
   @login_required
   def secrets():
     return f"Welcome to the inner sanctum, {current_user.email.split('@')[0]}"
-
 
   @app.route('/')
   def index():
