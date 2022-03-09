@@ -5,13 +5,11 @@ ENV PYTHONUNBUFFERED=1
 ENV FLASK_ENV=development
 ENV FLASK_APP=project
 
-COPY requirements-dev.txt .
+ADD requirements-dev.txt .
 RUN pip install -r requirements-dev.txt
 
-COPY project/ /project/
+ADD project/ /project/
 
-
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
 CMD ["flask", "run", "--host", "0.0.0.0"]
 
 
