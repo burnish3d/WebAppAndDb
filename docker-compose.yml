@@ -10,6 +10,7 @@ services:
     ports:
       - "5000:5000"
     environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@db:5432/postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=postgres
@@ -26,8 +27,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=postgres
-    volumes:
-      - ./sql/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
+#    volumes:
+#      - ./sql/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
 #       - db:/var/lib/postgresql/data
 #unconmment these lines for local persistent storage
 # volumes:
