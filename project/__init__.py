@@ -1,17 +1,11 @@
-from flask import Flask, request, jsonify, redirect, abort, url_for
-from flask_login import (
-    UserMixin,
-    LoginManager,
-    login_user,
-    current_user,
-    login_required,
-    logout_user,
-)
-import bcrypt
-import flask_sqlalchemy
 import os
 import re
 
+import bcrypt
+import flask_sqlalchemy
+from flask import Flask, abort, jsonify, redirect, request, url_for
+from flask_login import (LoginManager, UserMixin, current_user, login_required,
+                         login_user, logout_user)
 
 lm = LoginManager()
 
