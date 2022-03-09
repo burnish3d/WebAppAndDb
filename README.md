@@ -1,4 +1,4 @@
-<h3 align="center">arrayBackendHW</h3>
+<h3 align="center">WebAppAndDb</h3>
 
 ## About The Project
 
