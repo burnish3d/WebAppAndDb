@@ -4,6 +4,8 @@ services:
 
   web:
     build: .
+    container_name: web
+    restart: always
     command: flask run --host 0.0.0.0
     ports:
       - "5000:5000"
@@ -15,11 +17,19 @@ services:
       - db
 
   db:
-    image: postgres:12
-    command:
+    image: postgres:latest
+    restart: always
+    container_name: pg
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./sql/db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local

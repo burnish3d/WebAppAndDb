@@ -3,9 +3,12 @@ FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_ENV=development
+ENV FLASK_APP=project
+
 COPY requirements-dev.txt .
 RUN pip install -r requirements-dev.txt
-COPY app.py .
+
+COPY project/ /project/
 
 
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
