@@ -3,6 +3,7 @@ from flask_login import UserMixin, LoginManager, login_user, current_user, login
 import bcrypt
 import flask_sqlalchemy
 import os
+import re
 
 
 lm = LoginManager()
@@ -61,7 +62,12 @@ def create_app(test_config=None):
   @app.route("/signup", methods=["POST"])
   def signUp():
     email = request.json['email']
-    if User.query.filter_by(cannonical_email=email.lower()).first(): return '400'
+    email_regex = r"[^@]+@[^@]+\.[^@]+"
+    if not re.fullmatch(email_regex, email):
+      #this regex is checking that only one @ symbol and at least one . after it
+      #primarily checking that the user supplied something that at least looked like an email address
+      return abort(400, "Are you sure this is your email address?")
+    if User.query.filter_by(cannonical_email=email.lower()).first(): return abort(400)
     password = request.json['password']
     salt = bcrypt.gensalt()
     hash = bcrypt.hashpw(password.encode('utf-8'), salt) #this step silently ignores passwords longer than 72 characters, and we are goingto treat all input as utf-8 for now
