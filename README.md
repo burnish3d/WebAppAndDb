@@ -53,3 +53,11 @@ Will stop and remove the containers but not any associated volumes.
 ### API documentation
 
 [Postman Collection](https://www.getpostman.com/collections/65662e06361f104400f2)
+
+
+### Roadmap
+
+* What goes into automating a cert for HTTPS anyway?
+* Provide a WSGI for the flask server
+* Testing
+* Move more settings to config files, as the cool kids are doing
